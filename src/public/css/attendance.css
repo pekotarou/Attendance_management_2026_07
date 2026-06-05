@@ -1,0 +1,71 @@
+.attendance {
+    min-height: calc(100vh - 72px);
+    background: #f0eff2;
+}
+
+.attendance__inner {
+    padding-top: 160px;
+    text-align: center;
+}
+
+.attendance__status {
+    display: inline-block;
+    margin: 0 0 32px;
+    padding: 8px 18px;
+    border-radius: 50px;
+    background: #c8c8c8;
+    color: #696969;
+    font-size: 16px;
+    font-weight: bold;
+    /* 修正: ステータス文字の間隔を少し広げる */
+    letter-spacing: 0.10em;
+}
+
+.attendance__date {
+    margin: 0 0 24px;
+    font-size: 32px;
+}
+
+.attendance__time {
+    margin: 0 0 48px;
+    font-size: 80px;
+    font-weight: bold;
+}
+
+.attendance__form {
+    margin: 0;
+}
+
+.attendance__button {
+    width: 220px;
+    height: 64px;
+    border: none;
+    border-radius: 12px;
+    background: #000;
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    /* 修正: ボタン文字の間隔を少し広げる */
+    letter-spacing: 0.12em;
+}
+
+.attendance__message {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 0.12em;
+}
+
+/* 修正: ボタンを横並びにする */
+.attendance__button-area {
+    display: flex;
+    justify-content: center;
+    gap: 56px;
+}
+
+/* 修正: 白い休憩入ボタン */
+.attendance__button--secondary {
+    background: #fff;
+    color: #000;
+}

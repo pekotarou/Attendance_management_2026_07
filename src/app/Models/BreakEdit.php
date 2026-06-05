@@ -30,6 +30,7 @@ class BreakEdit extends Model
     // 修正: 休憩修正は元の休憩データに属する
     public function breakTime()
     {
-        return $this->belongsTo(BreakTime::class, 'break_id');
+        // 修正: 休憩モデルを AttendanceBreak に統一
+        return $this->belongsTo(AttendanceBreak::class, 'break_id');
     }
 }

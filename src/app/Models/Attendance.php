@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\AttendanceBreak;
 
 class Attendance extends Model
 {
@@ -32,13 +33,15 @@ class Attendance extends Model
 
     // 修正: 勤怠は複数の休憩を持つ
     public function breaks()
-    {
-        return $this->hasMany(BreakTime::class);
-    }
+{
+    // 修正: breaksテーブル用のモデルに合わせる
+    return $this->hasMany(AttendanceBreak::class);
+}
 
     // 修正: 勤怠は複数の修正申請を持つ
     public function attendanceEdits()
     {
         return $this->hasMany(AttendanceEdit::class);
     }
+    
 }

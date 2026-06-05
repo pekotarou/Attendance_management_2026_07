@@ -25,14 +25,16 @@
                         alt="COACHTECH">
                 </a>
 
-                {{-- 修正: ログイン中だけログアウトボタンを表示 --}}
+                {{-- 修正: メール認証誘導画面ではログアウトを非表示 --}}
                 @auth
-                    <form class="header-logout" action="/logout" method="post">
-                        @csrf
-                        <button class="header-logout__button" type="submit">
-                            ログアウト
-                        </button>
-                    </form>
+                    @unless (request()->is('email/verify'))
+                        <form class="header-logout" action="/logout" method="post">
+                            @csrf
+                            <button class="header-logout__button" type="submit">
+                                ログアウト
+                            </button>
+                        </form>
+                    @endunless
                 @endauth
             </div>
         </header>

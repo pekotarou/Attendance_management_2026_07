@@ -9,7 +9,7 @@ body {
 
 .app {
     min-height: 100vh;
-    background: #f0eff2;
+    /*background: white;*/
     font-family: Arial, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
 }
 
@@ -41,7 +41,7 @@ body {
 }
 
 .main {
-    padding: 60px 20px;
+    padding: 0;
 }
 
 .header__logo-image {

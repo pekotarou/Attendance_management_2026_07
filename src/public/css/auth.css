@@ -1,6 +1,7 @@
 .auth {
     max-width: 680px;
     margin: 0 auto;
+    padding: 60px 20px;
 }
 
 .auth__inner {
@@ -61,4 +62,23 @@
 .auth__link {
     color: #0073cc;
     text-decoration: none;
+}
+
+.auth__text {
+    margin-bottom: 16px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.auth-form__button--link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.auth-form__button--secondary {
+    margin-top: 16px;
+    background: #666;
 }
