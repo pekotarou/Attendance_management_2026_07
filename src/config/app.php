@@ -174,6 +174,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        //追加: Fortifyを有効化
+        App\Providers\FortifyServiceProvider::class,
 
     ],
 

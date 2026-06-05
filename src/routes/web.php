@@ -2,17 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
+// 修正: トップページ確認用
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
+
+// 修正: 一時確認用。後でAttendanceControllerに置き換える
+Route::get('/attendance', function () {
+    return view('attendance.index');
+})->middleware('auth');

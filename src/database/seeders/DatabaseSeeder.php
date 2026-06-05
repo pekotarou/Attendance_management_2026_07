@@ -7,12 +7,13 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
-     *
-     * @return void
+     * Seederを実行
      */
-    public function run()
+    public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        // 修正: 初期ユーザー作成
+        $this->call([
+            UserSeeder::class,
+        ]);
     }
 }
