@@ -44,31 +44,36 @@
                 <th class="attendance-table__heading">合計</th>
                 <th class="attendance-table__heading">詳細</th>
             </tr>
-
-            @foreach ($attendances as $attendance)
+            @foreach ($dates as $date)
                 @php
-                    $breakMinutes = $attendance->breaks->sum('break_time');
+                    // 修正: その日付に対応する勤怠データを取得
+                    $attendance = $attendances->get($date->toDateString());
 
+                    $breakMinutes = 0;
                     $workMinutes = null;
 
-                    if ($attendance->clock_in_time && $attendance->clock_out_time) {
-                        $workMinutes = \Carbon\Carbon::parse($attendance->clock_in_time)
-                            ->diffInMinutes(\Carbon\Carbon::parse($attendance->clock_out_time))
-                            - $breakMinutes;
+                    if ($attendance) {
+                        $breakMinutes = $attendance->breaks->sum('break_time');
+
+                        if ($attendance->clock_in_time && $attendance->clock_out_time) {
+                            $workMinutes = \Carbon\Carbon::parse($attendance->clock_in_time)
+                                ->diffInMinutes(\Carbon\Carbon::parse($attendance->clock_out_time))
+                                - $breakMinutes;
+                        }
                     }
                 @endphp
 
                 <tr class="attendance-table__row">
                     <td class="attendance-table__data">
-                        {{ \Carbon\Carbon::parse($attendance->date)->isoFormat('MM/DD(ddd)') }}
+                        {{ $date->isoFormat('MM/DD(ddd)') }}
                     </td>
 
                     <td class="attendance-table__data">
-                        {{ $attendance->clock_in_time ? \Carbon\Carbon::parse($attendance->clock_in_time)->format('H:i') : '' }}
+                        {{ $attendance && $attendance->clock_in_time ? \Carbon\Carbon::parse($attendance->clock_in_time)->format('H:i') : '' }}
                     </td>
 
                     <td class="attendance-table__data">
-                        {{ $attendance->clock_out_time ? \Carbon\Carbon::parse($attendance->clock_out_time)->format('H:i') : '' }}
+                        {{ $attendance && $attendance->clock_out_time ? \Carbon\Carbon::parse($attendance->clock_out_time)->format('H:i') : '' }}
                     </td>
 
                     <td class="attendance-table__data">
@@ -80,9 +85,15 @@
                     </td>
 
                     <td class="attendance-table__data">
-                        <a class="attendance-table__link" href="#">
-                            詳細
-                        </a>
+                        @if ($attendance)
+                            <a class="attendance-table__link" href="/attendance/{{ $attendance->id }}">
+                                詳細
+                            </a>
+                        @else
+                            <span class="attendance-table__link">
+                                詳細
+                            </span>
+                        @endif
                     </td>
                 </tr>
             @endforeach

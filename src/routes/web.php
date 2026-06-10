@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\CorrectionRequestController;
 
 // 修正: トップページ確認用
 Route::get('/', function () {
@@ -31,4 +32,16 @@ Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut'])
 
 // 修正: 勤怠一覧画面
 Route::get('/attendance/list', [AttendanceController::class, 'list'])
+    ->middleware(['auth', 'verified']);
+
+// 修正: 勤怠詳細画面
+Route::get('/attendance/{attendance}', [AttendanceController::class, 'detail'])
+    ->middleware(['auth', 'verified']);
+
+// 修正: 勤怠修正申請処理
+Route::post('/attendance/{attendance}/correction', [AttendanceController::class, 'storeCorrection'])
+    ->middleware(['auth', 'verified']);
+
+// 修正: 申請一覧画面
+Route::get('/stamp_correction_request/list', [CorrectionRequestController::class, 'index'])
     ->middleware(['auth', 'verified']);
