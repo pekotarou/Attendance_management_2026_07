@@ -63,7 +63,7 @@ class CorrectionRequestAndReportFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: 承認待ち申請が表示される
+        // 承認待ち申請が表示される
         $response->assertSee('承認待ち');
         $response->assertSee('承認待ちテスト');
         $response->assertSee('テスト太郎');
@@ -91,7 +91,7 @@ class CorrectionRequestAndReportFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: 承認済み申請が表示される
+        // 承認済み申請が表示される
         $response->assertSee('承認済み');
         $response->assertSee('承認済みテスト');
         $response->assertSee('テスト太郎');
@@ -120,7 +120,7 @@ class CorrectionRequestAndReportFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: 他人の申請は表示されない
+        // 他人の申請は表示されない
         $response->assertDontSee('他人太郎');
         $response->assertDontSee('他人の申請');
     }
@@ -139,7 +139,7 @@ class CorrectionRequestAndReportFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: レポート画面の見出しや基本文言が表示されることを確認
+        // レポート画面の見出しや基本文言が表示されることを確認
         $response->assertSee('レポート');
     }
 
@@ -158,7 +158,7 @@ class CorrectionRequestAndReportFeatureTest extends TestCase
 
         $response->assertOk();
 
-        /// 修正: 実際のレポート画面に表示されている文言に合わせる
+        /// 実際のレポート画面に表示されている文言に合わせる
         $response->assertSee('総労働時間');
         $response->assertSee('総残業時間');
         $response->assertSee('平均労働時間');

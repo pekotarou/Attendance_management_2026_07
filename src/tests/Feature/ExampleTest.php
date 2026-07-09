@@ -11,10 +11,10 @@ class ExampleTest extends TestCase
      */
     public function test_top_page_redirects_to_login()
     {
-        // 修正: / は /login にリダイレクトする設計
+        // / は /login にリダイレクトする設計
         $response = $this->get('/');
 
-        // 修正: 200ではなく、/login へのリダイレクトを確認
+        // 200ではなく、/login へのリダイレクトを確認
         $response->assertRedirect('/login');
     }
 }

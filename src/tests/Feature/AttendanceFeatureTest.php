@@ -41,7 +41,7 @@ class AttendanceFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: 画面上に勤務外ステータスが表示されることを確認
+        // 画面上に勤務外ステータスが表示されることを確認
         $response->assertSee('勤務外');
 
         Carbon::setTestNow();
@@ -60,7 +60,7 @@ class AttendanceFeatureTest extends TestCase
 
         $response->assertRedirect('/attendance');
 
-        // 修正: attendancesテーブルに出勤時刻が保存される
+        // attendancesテーブルに出勤時刻が保存される
         $this->assertDatabaseHas('attendances', [
             'user_id' => $user->id,
             'date' => '2026-07-01',
@@ -97,7 +97,7 @@ class AttendanceFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: 画面上に出勤中ステータスが表示されることを確認
+        // 画面上に出勤中ステータスが表示されることを確認
         $response->assertSee('出勤中');
 
         Carbon::setTestNow();
@@ -124,7 +124,7 @@ class AttendanceFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: すでに出勤済みなので「出勤する」ボタンは表示されない
+        // すでに出勤済みなので「出勤する」ボタンは表示されない
         $response->assertDontSee('出勤する');
 
         Carbon::setTestNow();
@@ -151,7 +151,7 @@ class AttendanceFeatureTest extends TestCase
 
         $response->assertRedirect('/attendance');
 
-        // 修正: breaksテーブルに休憩開始時刻が保存される
+        // breaksテーブルに休憩開始時刻が保存される
         $this->assertDatabaseHas('breaks', [
             'attendance_id' => $attendance->id,
         ]);
@@ -192,7 +192,7 @@ class AttendanceFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: 画面上に休憩中ステータスが表示されることを確認
+        // 画面上に休憩中ステータスが表示されることを確認
         $response->assertSee('休憩中');
 
         Carbon::setTestNow();
@@ -228,7 +228,7 @@ class AttendanceFeatureTest extends TestCase
 
         $break->refresh();
 
-        // 修正: 休憩終了時刻と休憩時間が保存される
+        // 休憩終了時刻と休憩時間が保存される
         $this->assertNotNull($break->break_out_time);
         $this->assertEquals(60, $break->break_time);
 
@@ -258,7 +258,7 @@ class AttendanceFeatureTest extends TestCase
 
         $attendance->refresh();
 
-        // 修正: 退勤時刻が保存される
+        // 退勤時刻が保存される
         $this->assertNotNull($attendance->clock_out_time);
 
         Carbon::setTestNow();
@@ -285,7 +285,7 @@ class AttendanceFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: 画面上に退勤済ステータスが表示されることを確認
+        // 画面上に退勤済ステータスが表示されることを確認
         $response->assertSee('退勤済');
 
         Carbon::setTestNow();
@@ -310,7 +310,7 @@ class AttendanceFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: 勤怠一覧に日付と時刻が表示される
+        // 勤怠一覧に日付と時刻が表示される
         $response->assertSee('07/01');
         $response->assertSee('09:00');
         $response->assertSee('18:00');
@@ -335,7 +335,7 @@ class AttendanceFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: 勤怠詳細にユーザー名・日付・時刻が表示される
+        // 勤怠詳細にユーザー名・日付・時刻が表示される
         $response->assertSee('テスト太郎');
         $response->assertSee('2026年');
         $response->assertSee('7月1日');
@@ -358,12 +358,12 @@ class AttendanceFeatureTest extends TestCase
             'note' => null,
         ]);
 
-        // 修正: 実際の画面操作と同じように、勤怠詳細画面からPOSTしたことにする
+        // 実際の画面操作と同じように、勤怠詳細画面からPOSTしたことにする
         $response = $this
             ->actingAs($user)
             ->from('/attendance/' . $attendance->id)
             ->post('/attendance/' . $attendance->id . '/correction', [
-                // 修正: 実際のFormRequestに合わせて name を変更
+                // 実際のFormRequestに合わせて name を変更
                 'clock_in_time' => '09:30',
                 'clock_out_time' => '18:30',
 
@@ -377,13 +377,13 @@ class AttendanceFeatureTest extends TestCase
             'note' => '電車遅延のため',
         ]);
 
-        // 修正: バリデーションエラーがないことも確認
+        // バリデーションエラーがないことも確認
         $response->assertSessionHasNoErrors();
 
-        // 修正: 勤怠詳細画面に戻ることを確認
+        // 勤怠詳細画面に戻ることを確認
         $response->assertRedirect('/attendance/' . $attendance->id);
 
-        // 修正: attendance_editsテーブルに承認待ちで保存される
+        // attendance_editsテーブルに承認待ちで保存される
         $this->assertDatabaseHas('attendance_edits', [
             'attendance_id' => $attendance->id,
             'user_id' => $user->id,

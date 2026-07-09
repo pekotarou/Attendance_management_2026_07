@@ -85,7 +85,7 @@ class AdminAttendanceFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: 一覧に一般ユーザー名と時刻が表示される
+        // 一覧に一般ユーザー名と時刻が表示される
         $response->assertSee('一般太郎');
         $response->assertSee('09:00');
         $response->assertSee('18:00');
@@ -104,7 +104,7 @@ class AdminAttendanceFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: 詳細にユーザー名・日付・時刻が表示される
+        // 詳細にユーザー名・日付・時刻が表示される
         $response->assertSee('一般太郎');
         $response->assertSee('2026年');
         $response->assertSee('09:00');
@@ -124,7 +124,7 @@ class AdminAttendanceFeatureTest extends TestCase
             ->actingAs($admin)
             ->from('/admin/attendance/' . $attendance->id)
             ->post('/admin/attendance/' . $attendance->id . '/correction', [
-                // 修正: 実際のFormRequestに合わせたname
+                // 実際のFormRequestに合わせたname
                 'clock_in_time' => '10:00',
                 'clock_out_time' => '19:00',
                 'breaks' => [
@@ -141,7 +141,7 @@ class AdminAttendanceFeatureTest extends TestCase
 
         $response->assertRedirect('/admin/attendance/' . $attendance->id);
 
-        // 修正: 管理者修正は承認済みのattendance_editsとして保存される
+        // 管理者修正は承認済みのattendance_editsとして保存される
         $this->assertDatabaseHas('attendance_edits', [
             'attendance_id' => $attendance->id,
             'user_id' => $user->id,
@@ -164,7 +164,7 @@ class AdminAttendanceFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: 一般ユーザーがスタッフ一覧に表示される
+        // 一般ユーザーがスタッフ一覧に表示される
         $response->assertSee('一般太郎');
         $response->assertSee($user->email);
     }
@@ -182,7 +182,7 @@ class AdminAttendanceFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: スタッフ別勤怠一覧に日付と時刻が表示される
+        // スタッフ別勤怠一覧に日付と時刻が表示される
         $response->assertSee('一般太郎');
         $response->assertSee('07/01');
         $response->assertSee('09:00');
@@ -211,7 +211,7 @@ class AdminAttendanceFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: 修正申請一覧に申請内容が表示される
+        // 修正申請一覧に申請内容が表示される
         $response->assertSee('一般太郎');
         $response->assertSee('申請テスト');
         $response->assertSee('承認待ち');

@@ -15,7 +15,7 @@ class ApiTokenController extends Controller
      */
     public function store(Request $request)
     {
-        // 修正: APIログイン用バリデーション
+        // APIログイン用バリデーション
         $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -23,14 +23,14 @@ class ApiTokenController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        // 修正: ユーザーが存在しない、またはパスワード不一致なら同じエラー
+        // ユーザーが存在しない、またはパスワード不一致なら同じエラー
         if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['認証情報が正しくありません。'],
             ]);
         }
 
-        // 修正: 外部アプリ用トークンを発行
+        // 外部アプリ用トークンを発行
         $token = $user->createToken('external-app-token')->plainTextToken;
 
         return response()->json([

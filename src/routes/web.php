@@ -58,41 +58,41 @@ Route::get('/stamp_correction_request/list', [CorrectionRequestController::class
 
 
 //管理者側画面
-// 修正: 管理者ログイン画面
+// 管理者ログイン画面
 Route::get('/admin/login', [AdminLoginController::class, 'showLoginForm']);
 
-// 修正: 管理者ログイン処理
+// 管理者ログイン処理
 Route::post('/admin/login', [AdminLoginController::class, 'login']);
 
-// 修正: 管理者勤怠一覧画面
+// 管理者勤怠一覧画面
 Route::get('/admin/attendance/list', [AdminAttendanceController::class, 'index'])
     ->middleware('auth');
 
-// 修正: 管理者スタッフ一覧画面
+// 管理者スタッフ一覧画面
 Route::get('/admin/staff/list', [AdminStaffController::class, 'index'])
     ->middleware('auth');
 
 
-// 修正: 管理者スタッフ別月次勤怠画面
+// 管理者スタッフ別月次勤怠画面
 Route::get('/admin/attendance/staff/{user}', [AdminStaffController::class, 'attendance'])
     ->middleware('auth');
 
-// 修正: 管理者勤怠修正処理
+// 管理者勤怠修正処理
 Route::post('/admin/attendance/{attendance}/correction', [AdminAttendanceController::class, 'update'])
     ->middleware('auth');
 
-// 修正: 管理者勤怠詳細画面
+// 管理者勤怠詳細画面
 Route::get('/admin/attendance/{attendance}', [AdminAttendanceController::class, 'detail'])
     ->middleware('auth');
 
-// 修正: 管理者申請一覧画面
+// 管理者申請一覧画面
 Route::get('/admin/stamp_correction_request/list', [AdminCorrectionRequestController::class, 'index'])
     ->middleware('auth');
 
-// 修正: 管理者申請承認画面
+// 管理者申請承認画面
 Route::get('/admin/stamp_correction_request/approve/{attendanceEdit}', [AdminCorrectionRequestController::class, 'show'])
     ->middleware('auth');
 
-// 修正: 管理者申請承認処理
+// 管理者申請承認処理
 Route::post('/admin/stamp_correction_request/approve/{attendanceEdit}', [AdminCorrectionRequestController::class, 'approve'])
     ->middleware('auth');

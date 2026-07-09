@@ -23,7 +23,7 @@ class AdminLoginController extends Controller
      */
     public function login(Request $request)
     {
-        // 修正: 管理者ログイン用バリデーション
+        // 管理者ログイン用バリデーション
         $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -33,10 +33,10 @@ class AdminLoginController extends Controller
             'password.required' => 'パスワードを入力してください',
         ]);
 
-        // 修正: 入力されたメールアドレスのユーザーを取得
+        // 入力されたメールアドレスのユーザーを取得
         $user = User::where('email', $request->email)->first();
 
-        // 修正: ユーザーが存在しない、パスワード不一致、管理者ではない場合はエラー
+        // ユーザーが存在しない、パスワード不一致、管理者ではない場合はエラー
         if (! $user || ! Hash::check($request->password, $user->password) || ! $user->admin) {
             return back()
                 ->withErrors([
@@ -45,7 +45,7 @@ class AdminLoginController extends Controller
                 ->withInput();
         }
 
-        // 修正: 管理者としてログイン
+        // 管理者としてログイン
         Auth::login($user);
 
         return redirect('/admin/attendance/list');

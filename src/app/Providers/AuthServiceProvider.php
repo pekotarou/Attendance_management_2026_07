@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
     */
     protected $policies = [
-        // 修正: AttendanceモデルにAPI用Policyを紐づけ
+        // AttendanceモデルにAPI用Policyを紐づけ
         Attendance::class => AttendanceRecordPolicy::class,
     ];
 

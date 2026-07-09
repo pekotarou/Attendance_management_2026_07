@@ -12,7 +12,7 @@ class AttendanceRecordResource extends JsonResource
      */
     public function toArray($request)
     {
-        // 修正: 承認済みの修正申請があれば最新のものを優先する
+        // 承認済みの修正申請があれば最新のものを優先する
         $approvedAttendanceEdit = $this->attendanceEdits
             ->where('status', '承認済み')
             ->sortByDesc('created_at')
@@ -26,7 +26,7 @@ class AttendanceRecordResource extends JsonResource
             ? $approvedAttendanceEdit->requested_clock_out_time
             : $this->clock_out_time;
 
-        // 修正: 休憩時間を計算
+        // 休憩時間を計算
         $breakMinutes = 0;
 
         if ($approvedAttendanceEdit) {

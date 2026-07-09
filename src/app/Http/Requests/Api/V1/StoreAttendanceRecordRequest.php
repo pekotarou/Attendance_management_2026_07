@@ -20,19 +20,19 @@ class StoreAttendanceRecordRequest extends FormRequest
     public function rules()
     {
         return [
-            // 修正: 勤怠日は必須・日付形式
+            // 勤怠日は必須・日付形式
             'date' => ['required', 'date_format:Y-m-d'],
 
-            // 修正: ユーザーIDは必須・usersテーブルに存在すること
+            // ユーザーIDは必須・usersテーブルに存在すること
             'user_id' => ['required', 'exists:users,id'],
 
-            // 修正: 同じユーザー・同じ日付の勤怠は重複登録させない
+            // 同じユーザー・同じ日付の勤怠は重複登録させない
             'clock_in' => ['required', 'date_format:H:i:s'],
 
-            // 修正: 退勤は任意。ただし入力する場合は時刻形式
+            // 退勤は任意。ただし入力する場合は時刻形式
             'clock_out' => ['nullable', 'date_format:H:i:s'],
 
-            // 修正: 備考は任意・255文字以内
+            // 備考は任意・255文字以内
             'comment' => ['nullable', 'max:255'],
         ];
     }

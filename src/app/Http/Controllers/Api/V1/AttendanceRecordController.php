@@ -17,20 +17,20 @@ class AttendanceRecordController extends Controller
      */
     public function index(Request $request)
     {
-        // 修正: 勤怠データを取得する基本クエリ
+        // 勤怠データを取得する基本クエリ
         $query = Attendance::with(['user', 'breaks', 'attendanceEdits.breakEdits']);
 
-        // 修正: user_idで絞り込み
+        // user_idで絞り込み
         if ($request->filled('user_id')) {
             $query->where('user_id', $request->user_id);
         }
 
-        // 修正: dateで絞り込み
+        // dateで絞り込み
         if ($request->filled('date')) {
             $query->whereDate('date', $request->date);
         }
 
-        // 修正: monthで絞り込み
+        // monthで絞り込み
         if ($request->filled('month')) {
             $month = Carbon::parse($request->month);
 
@@ -38,7 +38,7 @@ class AttendanceRecordController extends Controller
                 ->whereMonth('date', $month->month);
         }
 
-        // 修正: ページ数。未指定なら20件、最大100件
+        // ページ数。未指定なら20件、最大100件
         $perPage = min($request->input('per_page', 20), 100);
 
         $attendances = $query
@@ -61,7 +61,7 @@ class AttendanceRecordController extends Controller
      */
     public function show(Attendance $attendanceRecord)
     {
-        // 修正: 関連データを読み込む
+        // 関連データを読み込む
         $attendanceRecord->load([
             'user',
             'breaks',
@@ -80,7 +80,7 @@ class AttendanceRecordController extends Controller
     {
         $validated = $request->validated();
 
-        // 修正: 同じユーザー・同じ日付の勤怠がある場合は422で返す
+        // 同じユーザー・同じ日付の勤怠がある場合は422で返す
         $exists = Attendance::where('user_id', $validated['user_id'])
             ->where('date', $validated['date'])
             ->exists();
@@ -94,7 +94,7 @@ class AttendanceRecordController extends Controller
             ], 422);
         }
 
-        // 修正: 勤怠データを登録
+        // 勤怠データを登録
         $attendance = Attendance::create([
             'user_id' => $validated['user_id'],
             'date' => $validated['date'],
@@ -121,11 +121,11 @@ class AttendanceRecordController extends Controller
      */
     public function update(UpdateAttendanceRecordRequest $request, Attendance $attendanceRecord)
     {
-         // 修正: 本人または管理者のみ更新可能
+         // 本人または管理者のみ更新可能
         $this->authorize('update', $attendanceRecord);
         $validated = $request->validated();
 
-        // 修正: 勤怠データを更新
+        // 勤怠データを更新
         $attendanceRecord->update([
             'date' => $validated['date'],
             'clock_in_time' => $validated['date'] . ' ' . $validated['clock_in'],
@@ -151,12 +151,12 @@ class AttendanceRecordController extends Controller
      */
     public function destroy(Attendance $attendanceRecord)
     {
-        // 修正: 本人または管理者のみ削除可能
+        // 本人または管理者のみ削除可能
         $this->authorize('delete', $attendanceRecord);
-        // 修正: 勤怠データを削除
+        // 勤怠データを削除
         $attendanceRecord->delete();
 
-        // 修正: 削除成功時は204を返す
+        // 削除成功時は204を返す
         return response()->json(null, 204);
     }
 

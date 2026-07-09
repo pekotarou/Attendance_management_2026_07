@@ -18,7 +18,7 @@
         <header class="header">
             <div class="header__inner">
                 @php
-                    // 修正: ログイン状態・権限によってロゴのリンク先を切り替える
+                    // ログイン状態・権限によってロゴのリンク先を切り替える
                     $logoUrl = '/login';
 
                     if (auth()->check()) {

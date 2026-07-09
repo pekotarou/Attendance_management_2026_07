@@ -58,7 +58,7 @@ class FortifyServiceProvider extends ServiceProvider
 
             $user = User::where('email', $request->email)->first();
 
-            // 修正: ユーザーが存在しない、パスワードが違う、管理者である場合は同じエラーにする
+            // ユーザーが存在しない、パスワードが違う、管理者である場合は同じエラーにする
             if (! $user || ! Hash::check($request->password, $user->password) || $user->admin) {
                 throw ValidationException::withMessages([
                     'email' => ['ログイン情報が登録されていません'],

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AttendanceCorrectionRequest; //勤怠修正申請のFormRequest
 use App\Models\AttendanceEdit; //勤怠修正申請モデル
 use App\Models\BreakEdit; //休憩修正申請モデル
-use Illuminate\Support\Facades\DB; // 修正: トランザクション用
+use Illuminate\Support\Facades\DB; // トランザクション用
 
 class AttendanceController extends Controller
 {
@@ -18,7 +18,7 @@ class AttendanceController extends Controller
     */
     public function index()
     {
-        // 修正: 管理者が一般ユーザー用勤怠画面に入らないようにする
+        // 管理者が一般ユーザー用勤怠画面に入らないようにする
         if (auth()->user()->admin) {
             return redirect('/admin/attendance/list');
         }
@@ -210,7 +210,7 @@ class AttendanceController extends Controller
         $endOfMonth = $currentMonth->copy()->endOfMonth();
 
         //ログインユーザーの指定月の勤怠データを取得
-        // 修正: 休憩データと修正申請データも一緒に取得
+        // 休憩データと修正申請データも一緒に取得
         $attendances = Attendance::with(['breaks', 'attendanceEdits.breakEdits'])
             ->where('user_id', auth()->id())
             ->whereBetween('date', [
@@ -246,14 +246,14 @@ class AttendanceController extends Controller
     */
     public function report()
     {
-        // 修正: 過去6ヶ月の開始月と終了月を作成
+        // 過去6ヶ月の開始月と終了月を作成
         $endMonth = Carbon::now()->startOfMonth();
         $startMonth = $endMonth->copy()->subMonths(5);
 
         $startDate = $startMonth->copy()->startOfMonth();
         $endDate = $endMonth->copy()->endOfMonth();
 
-        // 修正: ログインユーザーの過去6ヶ月分の勤怠を取得
+        // ログインユーザーの過去6ヶ月分の勤怠を取得
         // 承認済み修正申請も一緒に取得する
         $attendances = Attendance::with(['breaks', 'attendanceEdits.breakEdits'])
             ->where('user_id', auth()->id())
@@ -273,7 +273,7 @@ class AttendanceController extends Controller
 
         $monthlyReports = [];
 
-        // 修正: 過去6ヶ月分の月別データを先に用意
+        // 過去6ヶ月分の月別データを先に用意
         for ($month = $startMonth->copy(); $month->lte($endMonth); $month->addMonth()) {
             $monthlyReports[$month->format('Y-m')] = [
                 'month' => $month->format('Y-m'),
@@ -283,7 +283,7 @@ class AttendanceController extends Controller
         }
 
         foreach ($attendances as $attendance) {
-            // 修正: 承認済みの修正申請があれば最新のものを優先する
+            // 承認済みの修正申請があれば最新のものを優先する
             $approvedAttendanceEdit = $attendance->attendanceEdits
                 ->where('status', '承認済み')
                 ->sortByDesc('created_at')
@@ -301,7 +301,7 @@ class AttendanceController extends Controller
                 continue;
             }
 
-            // 修正: 休憩時間を計算
+            // 休憩時間を計算
             $breakMinutes = 0;
 
             if ($approvedAttendanceEdit) {
@@ -315,7 +315,7 @@ class AttendanceController extends Controller
                 $breakMinutes = $attendance->breaks->sum('break_time');
             }
 
-            // 修正: 勤務時間を計算
+            // 勤務時間を計算
             $workMinutes = Carbon::parse($clockInTime)
                 ->diffInMinutes(Carbon::parse($clockOutTime))
                 - $breakMinutes;
@@ -324,7 +324,7 @@ class AttendanceController extends Controller
                 $workMinutes = 0;
             }
 
-            // 修正: 残業時間は8時間を超えた分
+            // 残業時間は8時間を超えた分
             $overtimeMinutes = max(0, $workMinutes - 480);
 
             $totalWorkMinutes += $workMinutes;
@@ -338,7 +338,7 @@ class AttendanceController extends Controller
                 $monthlyReports[$monthKey]['overtime_minutes'] += $overtimeMinutes;
             }
 
-            // 修正: 今月分だけ異常検知する
+            // 今月分だけ異常検知する
             if (Carbon::parse($attendance->date)->isSameMonth(Carbon::now())) {
                 if (Carbon::parse($clockInTime)->format('H:i') > '09:00') {
                     $lateCount++;
@@ -375,15 +375,15 @@ class AttendanceController extends Controller
      */
     public function detail(Attendance $attendance)
     {
-        // 修正: 他人の勤怠詳細を見られないようにする
+        // 他人の勤怠詳細を見られないようにする
         if ($attendance->user_id !== auth()->id()) {
             abort(403);
         }
 
-        // 修正: ユーザーと休憩データを一緒に取得
+        // ユーザーと休憩データを一緒に取得
         $attendance->load(['user', 'breaks']);
 
-        // 修正: 承認待ちの修正申請と休憩修正申請を取得
+        // 承認待ちの修正申請と休憩修正申請を取得
         $pendingAttendanceEdit = AttendanceEdit::with('breakEdits')
             ->where('attendance_id', $attendance->id)
             ->where('user_id', auth()->id())
@@ -391,7 +391,7 @@ class AttendanceController extends Controller
             ->latest()
             ->first();
 
-        // 修正: 承認済みの修正申請と休憩修正申請を取得
+        // 承認済みの修正申請と休憩修正申請を取得
         $approvedAttendanceEdit = AttendanceEdit::with('breakEdits')
             ->where('attendance_id', $attendance->id)
             ->where('user_id', auth()->id())
@@ -402,7 +402,7 @@ class AttendanceController extends Controller
         return view('attendance.detail', [
             'attendance' => $attendance,
             'pendingAttendanceEdit' => $pendingAttendanceEdit,
-            'approvedAttendanceEdit' => $approvedAttendanceEdit, // 修正: 追加
+            'approvedAttendanceEdit' => $approvedAttendanceEdit, // 追加
         ]);
     }
     /**
@@ -417,7 +417,7 @@ class AttendanceController extends Controller
 
         $validated = $request->validated();
 
-        // 修正: 同じ勤怠に承認待ち申請がある場合は二重申請させない
+        // 同じ勤怠に承認待ち申請がある場合は二重申請させない
         $pendingAttendanceEdit = AttendanceEdit::where('attendance_id', $attendance->id)
             ->where('user_id', auth()->id())
             ->where('status', '承認待ち')
@@ -430,7 +430,7 @@ class AttendanceController extends Controller
         // 入力された時刻を、対象日の日時として保存する
         $date = Carbon::parse($attendance->date)->toDateString();
 
-        // 修正: attendance_edits と break_edits をセットで保存する
+        // attendance_edits と break_edits をセットで保存する
         DB::transaction(function () use ($validated, $request, $attendance, $date) {
             // 勤怠修正申請を保存
             $attendanceEdit = AttendanceEdit::create([

@@ -12,7 +12,7 @@ class AttendanceRecordPolicy
      */
     public function update(User $user, Attendance $attendance)
     {
-        // 修正: 管理者、または本人の勤怠のみ更新可能
+        // 管理者、または本人の勤怠のみ更新可能
         return $user->admin || $attendance->user_id === $user->id;
     }
 
@@ -21,7 +21,7 @@ class AttendanceRecordPolicy
      */
     public function delete(User $user, Attendance $attendance)
     {
-        // 修正: 管理者、または本人の勤怠のみ削除可能
+        // 管理者、または本人の勤怠のみ削除可能
         return $user->admin || $attendance->user_id === $user->id;
     }
 }

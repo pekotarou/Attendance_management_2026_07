@@ -13,19 +13,19 @@ class AdminCorrectionRequestController extends Controller
      */
     public function index(Request $request)
     {
-        // 修正: 管理者以外はアクセス禁止
+        // 管理者以外はアクセス禁止
         if (! auth()->user()->admin) {
             abort(403);
         }
 
-        // 修正: タブ判定
+        // タブ判定
         $tab = $request->query('status', 'pending');
 
         $status = $tab === 'approved'
             ? '承認済み'
             : '承認待ち';
 
-        // 修正: 全ユーザーの申請を取得
+        // 全ユーザーの申請を取得
         $attendanceEdits = AttendanceEdit::with(['attendance', 'user'])
             ->where('status', $status)
             ->latest()
@@ -42,12 +42,12 @@ class AdminCorrectionRequestController extends Controller
      */
     public function approve(AttendanceEdit $attendanceEdit)
     {
-        // 修正: 管理者以外はアクセス禁止
+        // 管理者以外はアクセス禁止
         if (! auth()->user()->admin) {
             abort(403);
         }
 
-        // 修正: 申請ステータスだけ承認済みにする
+        // 申請ステータスだけ承認済みにする
         // attendances / breaks は上書きしない
         $attendanceEdit->update([
             'status' => '承認済み',
@@ -60,12 +60,12 @@ class AdminCorrectionRequestController extends Controller
      */
     public function show(AttendanceEdit $attendanceEdit)
     {
-        // 修正: 管理者以外はアクセス禁止
+        // 管理者以外はアクセス禁止
         if (! auth()->user()->admin) {
             abort(403);
         }
 
-        // 修正: 勤怠・ユーザー・休憩修正データを取得
+        // 勤怠・ユーザー・休憩修正データを取得
         $attendanceEdit->load([
             'attendance.user',
             'breakEdits',

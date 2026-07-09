@@ -3,10 +3,10 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Database\Eloquent\ModelNotFoundException; // 修正: 追加
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException; // 修正: 追加
+use Illuminate\Database\Eloquent\ModelNotFoundException; // 追加
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException; // 追加
 use Throwable;
-use Illuminate\Auth\Access\AuthorizationException; // 修正: 追加
+use Illuminate\Auth\Access\AuthorizationException; // 追加
 
 class Handler extends ExceptionHandler
 {
@@ -44,14 +44,14 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         if ($request->is('api/*')) {
-            // 修正: 404をJSONで返す
+            // 404をJSONで返す
             if ($exception instanceof ModelNotFoundException || $exception instanceof NotFoundHttpException) {
                 return response()->json([
                     'error' => '勤怠情報が見つかりませんでした。',
                 ], 404);
             }
 
-            // 修正: 403をJSONで返す
+            // 403をJSONで返す
             if ($exception instanceof AuthorizationException) {
                 return response()->json([
                     'error' => 'この操作を実行する権限がありません。',

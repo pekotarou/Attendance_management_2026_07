@@ -49,7 +49,7 @@
                     // その日付に対応する勤怠データを取得
                     $attendance = $attendances->get($date->toDateString());
 
-                    // 修正: 承認済みの修正申請があれば最新のものを取得
+                    // 承認済みの修正申請があれば最新のものを取得
                     $approvedAttendanceEdit = $attendance
                         ? $attendance->attendanceEdits
                             ->where('status', '承認済み')
@@ -57,7 +57,7 @@
                             ->first()
                         : null;
 
-                    // 修正: 承認済み申請があれば、申請後の出勤・退勤を優先表示
+                    // 承認済み申請があれば、申請後の出勤・退勤を優先表示
                     $clockInTime = $approvedAttendanceEdit
                         ? $approvedAttendanceEdit->requested_clock_in_time
                         : ($attendance ? $attendance->clock_in_time : null);
@@ -66,7 +66,7 @@
                         ? $approvedAttendanceEdit->requested_clock_out_time
                         : ($attendance ? $attendance->clock_out_time : null);
 
-                    // 修正: 承認済み申請があれば、break_editsから休憩時間を計算
+                    // 承認済み申請があれば、break_editsから休憩時間を計算
                     $breakMinutes = 0;
 
                     if ($approvedAttendanceEdit) {
@@ -80,7 +80,7 @@
                         $breakMinutes = $attendance->breaks->sum('break_time');
                     }
 
-                    // 修正: 表示用の出勤・退勤・休憩から合計時間を計算
+                    // 表示用の出勤・退勤・休憩から合計時間を計算
                     $workMinutes = null;
 
                     if ($clockInTime && $clockOutTime) {

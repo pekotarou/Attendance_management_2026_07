@@ -51,10 +51,10 @@ class AuthFeatureTest extends TestCase
             'password_confirmation' => 'password',
         ]);
 
-        // 修正: Fortify登録後はログイン状態になる
+        // Fortify登録後はログイン状態になる
         $this->assertAuthenticated();
 
-        // 修正: 登録後の遷移先は実装により /email/verify または /attendance になる可能性がある
+        // 登録後の遷移先は実装により /email/verify または /attendance になる可能性がある
         $response->assertStatus(302);
     }
 
@@ -84,10 +84,10 @@ class AuthFeatureTest extends TestCase
 
         $response = $this->actingAs($user)->post('/logout');
 
-        // 修正: ログアウト後は未認証になる
+        // ログアウト後は未認証になる
         $this->assertGuest();
 
-        // 修正: ログアウト後はログイン画面などへリダイレクトする
+        // ログアウト後はログイン画面などへリダイレクトする
         $response->assertStatus(302);
     }
 
@@ -98,7 +98,7 @@ class AuthFeatureTest extends TestCase
     {
         $response = $this->get('/attendance');
 
-        // 修正: 未ログインなのでログイン画面へリダイレクト
+        // 未ログインなのでログイン画面へリダイレクト
         $response->assertRedirect('/login');
     }
 
@@ -111,7 +111,7 @@ class AuthFeatureTest extends TestCase
 
         $response = $this->actingAs($user)->get('/attendance');
 
-        // 修正: verifiedミドルウェアによりメール認証画面へリダイレクト
+        // verifiedミドルウェアによりメール認証画面へリダイレクト
         $response->assertRedirect('/email/verify');
     }
 
@@ -126,7 +126,7 @@ class AuthFeatureTest extends TestCase
 
         $response->assertOk();
 
-        // 修正: 勤怠登録画面が表示されることを確認
+        // 勤怠登録画面が表示されることを確認
         $response->assertSee('勤務外');
     }
 
@@ -142,10 +142,10 @@ class AuthFeatureTest extends TestCase
             'password' => 'password',
         ]);
 
-        // 修正: 管理者は一般ログイン不可
+        // 管理者は一般ログイン不可
         $this->assertGuest();
 
-        // 修正: ログイン画面に戻される
+        // ログイン画面に戻される
         $response->assertRedirect();
     }
 }

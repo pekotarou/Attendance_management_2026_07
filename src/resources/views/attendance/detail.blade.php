@@ -95,7 +95,7 @@
 
                         $breakLabel = $i === 0 ? '休憩' : '休憩' . ($i + 1);
 
-                        // 修正: 承認待ち・承認済みはbreak_edits、申請なしはbreaksから時刻を取得
+                        // 承認待ち・承認済みはbreak_edits、申請なしはbreaksから時刻を取得
                         if ($displayAttendanceEdit) {
                             $breakId = $break ? $break->break_id : '';
                             $breakInTime = $break ? $break->requested_break_in_time : null;

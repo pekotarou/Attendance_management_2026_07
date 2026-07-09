@@ -169,7 +169,7 @@ class AttendanceRecordApiTest extends TestCase
     {
         $user = $this->createUser();
 
-        // 修正: Sanctum認証済みユーザーとして実行
+        // Sanctum認証済みユーザーとして実行
         Sanctum::actingAs($user);
 
         $response = $this->postJson('/api/v1/attendance-records', [
