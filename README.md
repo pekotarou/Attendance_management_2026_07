@@ -42,6 +42,14 @@ cd Attendance_management_2026_07
 docker compose up -d --build
 ```
 
+````md
+※ MacのM1・M2チップのPCで `no matching manifest for linux/arm64/v8 in the manifest list entries` というエラーが表示される場合は、`docker-compose.yml` の `mysql` に `platform` の項目を追加してください。
+
+```yml
+mysql:
+  platform: linux/x86_64
+  image: mysql:8.0.26
+
 ### 3. PHPコンテナに入る
 
 ```bash
