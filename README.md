@@ -73,11 +73,6 @@ cp .env.example .env
 `.env` に以下の環境変数を設定してください。
 
 ```env
-APP_NAME=Laravel
-APP_ENV=local
-APP_KEY=
-APP_DEBUG=true
-APP_URL=http://localhost
 
 DB_CONNECTION=mysql
 DB_HOST=mysql
