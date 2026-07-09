@@ -7,6 +7,7 @@
     max-width: 900px;
     margin: 0 auto;
     padding-top: 80px;
+    padding-bottom: 80px;
 }
 
 .correction-request-list__heading {
@@ -27,14 +28,14 @@
 
 .correction-request-list__tab {
     padding-bottom: 16px;
-    color: #000;
+    color: #737373;
     font-size: 16px;
     font-weight: bold;
     text-decoration: none;
 }
 
 .correction-request-list__tab--active {
-    font-weight: bold;
+    color: #000;
 }
 
 .correction-request-table {
@@ -47,6 +48,16 @@
 
 .correction-request-table__row {
     border-bottom: 1px solid #e0e0e0;
+    /*文字の間隔を少し広げる*/
+    letter-spacing: 0.12em;
+}
+
+.correction-request-table__row--head {
+    border-bottom: 3px solid #e0e0e0;
+}
+
+.correction-request-table__row:last-child {
+    border-bottom: none;
 }
 
 .correction-request-table__heading {
@@ -70,3 +81,4 @@
     font-weight: bold;
     text-decoration: none;
 }
+

@@ -18,27 +18,27 @@ class Attendance extends Model
         'note',
     ];
 
-    // 修正: 日付・日時をCarbonで扱えるようにする
+    //日付・日時をCarbonで扱えるようにする
     protected $casts = [
         'date' => 'date',
         'clock_in_time' => 'datetime',
         'clock_out_time' => 'datetime',
     ];
 
-    // 修正: 勤怠は1人のユーザーに属する
+    //勤怠は1人のユーザーに属する
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // 修正: 勤怠は複数の休憩を持つ
+    //勤怠は複数の休憩を持つ
     public function breaks()
 {
-    // 修正: breaksテーブル用のモデルに合わせる
+    //breaksテーブル用のモデルに合わせる
     return $this->hasMany(AttendanceBreak::class);
 }
 
-    // 修正: 勤怠は複数の修正申請を持つ
+    //勤怠は複数の修正申請を持つ
     public function attendanceEdits()
     {
         return $this->hasMany(AttendanceEdit::class);

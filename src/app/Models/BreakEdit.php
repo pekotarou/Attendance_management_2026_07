@@ -21,16 +21,16 @@ class BreakEdit extends Model
         'requested_break_out_time' => 'datetime',
     ];
 
-    // 修正: 休憩修正は1つの修正申請に属する
+    //休憩修正は1つの修正申請に属する
     public function attendanceEdit()
     {
         return $this->belongsTo(AttendanceEdit::class);
     }
 
-    // 修正: 休憩修正は元の休憩データに属する
+    //休憩修正は元の休憩データに属する
     public function breakTime()
     {
-        // 修正: 休憩モデルを AttendanceBreak に統一
+        //休憩モデルを AttendanceBreak に統一
         return $this->belongsTo(AttendanceBreak::class, 'break_id');
     }
 }

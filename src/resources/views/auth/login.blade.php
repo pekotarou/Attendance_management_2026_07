@@ -9,7 +9,7 @@
     <div class="auth__inner">
         <h1 class="auth__heading">ログイン</h1>
 
-        {{-- 修正: FortifyのログインURLに送信 --}}
+        {{--FortifyのログインURLに送信 --}}
         <form class="auth-form" action="/login" method="post">
             @csrf
 

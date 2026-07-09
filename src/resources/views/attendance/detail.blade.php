@@ -14,6 +14,28 @@
         <form class="attendance-detail-form" action="/attendance/{{ $attendance->id }}/correction" method="post">
             @csrf
 
+            {{-- 修正: この画面で使う表示用データを先にまとめて定義 --}}
+            @php
+                // 優先順位：承認待ち → 承認済み → 元データ
+                $displayAttendanceEdit = $pendingAttendanceEdit ?: $approvedAttendanceEdit;
+
+                // 出勤・退勤の表示用データ
+                $clockInTime = $displayAttendanceEdit
+                    ? $displayAttendanceEdit->requested_clock_in_time
+                    : $attendance->clock_in_time;
+
+                $clockOutTime = $displayAttendanceEdit
+                    ? $displayAttendanceEdit->requested_clock_out_time
+                    : $attendance->clock_out_time;
+
+                // 休憩の表示用データ
+                $breaks = $displayAttendanceEdit
+                    ? $displayAttendanceEdit->breakEdits->values()
+                    : $attendance->breaks->values();
+
+                // 休憩は最低2行表示する
+                $breakRowCount = max(2, $breaks->count());
+            @endphp
             <table class="attendance-detail-table">
                 <tr class="attendance-detail-table__row">
                     <th class="attendance-detail-table__heading">名前</th>
@@ -35,39 +57,54 @@
                 <tr class="attendance-detail-table__row">
                     <th class="attendance-detail-table__heading">出勤・退勤</th>
                     <td class="attendance-detail-table__data">
-                        <input
-                            class="attendance-detail-form__time-input"
-                            type="text"
-                            name="clock_in_time"
-                            id="clock_in_time"
-                            value="{{ $attendance->clock_in_time ? \Carbon\Carbon::parse($attendance->clock_in_time)->format('H:i') : '' }}">
+                        @if ($pendingAttendanceEdit)
+                            {{-- 修正: 承認待ち中は入力欄ではなく通常表示 --}}
+                            <span class="attendance-detail-form__time-text">
+                                {{ $clockInTime ? \Carbon\Carbon::parse($clockInTime)->format('H:i') : '' }}
+                            </span>
 
-                        <span class="attendance-detail-form__separator">〜</span>
+                            <span class="attendance-detail-form__separator">〜</span>
 
-                        <input
-                            class="attendance-detail-form__time-input"
-                            type="text"
-                            name="clock_out_time"
-                            id="clock_out_time"
-                            value="{{ $attendance->clock_out_time ? \Carbon\Carbon::parse($attendance->clock_out_time)->format('H:i') : '' }}">
+                            <span class="attendance-detail-form__time-text">
+                                {{ $clockOutTime ? \Carbon\Carbon::parse($clockOutTime)->format('H:i') : '' }}
+                            </span>
+                        @else
+                            {{-- 通常時は入力欄 --}}
+                            <input
+                                class="attendance-detail-form__time-input"
+                                type="text"
+                                name="clock_in_time"
+                                id="clock_in_time"
+                                value="{{ $clockInTime ? \Carbon\Carbon::parse($clockInTime)->format('H:i') : '' }}">
+
+                            <span class="attendance-detail-form__separator">〜</span>
+
+                            <input
+                                class="attendance-detail-form__time-input"
+                                type="text"
+                                name="clock_out_time"
+                                id="clock_out_time"
+                                value="{{ $clockOutTime ? \Carbon\Carbon::parse($clockOutTime)->format('H:i') : '' }}">
+                        @endif
                     </td>
                 </tr>
 
-                @php
-                    // 修正: 休憩データを番号順に扱いやすくする
-                    $breaks = $attendance->breaks->values();
-
-                    // 修正: 休憩は最低2行表示する
-                    $breakRowCount = max(2, $breaks->count());
-                @endphp
-
                 @for ($i = 0; $i < $breakRowCount; $i++)
                     @php
-                        // 修正: 該当する休憩データを取得。なければnull
                         $break = $breaks->get($i);
 
-                        // 修正: 1つ目は「休憩」、2つ目以降は「休憩2」「休憩3」
                         $breakLabel = $i === 0 ? '休憩' : '休憩' . ($i + 1);
+
+                        // 修正: 承認待ち・承認済みはbreak_edits、申請なしはbreaksから時刻を取得
+                        if ($displayAttendanceEdit) {
+                            $breakId = $break ? $break->break_id : '';
+                            $breakInTime = $break ? $break->requested_break_in_time : null;
+                            $breakOutTime = $break ? $break->requested_break_out_time : null;
+                        } else {
+                            $breakId = $break ? $break->id : '';
+                            $breakInTime = $break ? $break->break_in_time : null;
+                            $breakOutTime = $break ? $break->break_out_time : null;
+                        }
                     @endphp
 
                     <tr class="attendance-detail-table__row">
@@ -76,25 +113,38 @@
                         </th>
 
                         <td class="attendance-detail-table__data">
-                            {{-- 修正: 後で修正申請に使うため、休憩IDも送れるようにする --}}
-                            <input
-                                type="hidden"
-                                name="break_id[]"
-                                value="{{ $break ? $break->id : '' }}">
+                            @if ($pendingAttendanceEdit)
+                                {{-- 修正: 承認待ち中は入力欄ではなく通常表示 --}}
+                                <span class="attendance-detail-form__time-text">
+                                    {{ $breakInTime ? \Carbon\Carbon::parse($breakInTime)->format('H:i') : '' }}
+                                </span>
 
-                            <input
-                                class="attendance-detail-form__time-input"
-                                type="text"
-                                name="break_in_time[]"
-                                value="{{ $break && $break->break_in_time ? \Carbon\Carbon::parse($break->break_in_time)->format('H:i') : '' }}">
+                                <span class="attendance-detail-form__separator">〜</span>
 
-                            <span class="attendance-detail-form__separator">〜</span>
+                                <span class="attendance-detail-form__time-text">
+                                    {{ $breakOutTime ? \Carbon\Carbon::parse($breakOutTime)->format('H:i') : '' }}
+                                </span>
+                            @else
+                                {{-- 通常時は入力欄 --}}
+                                <input
+                                    type="hidden"
+                                    name="break_id[]"
+                                    value="{{ $breakId }}">
 
-                            <input
-                                class="attendance-detail-form__time-input"
-                                type="text"
-                                name="break_out_time[]"
-                                value="{{ $break && $break->break_out_time ? \Carbon\Carbon::parse($break->break_out_time)->format('H:i') : '' }}">
+                                <input
+                                    class="attendance-detail-form__time-input"
+                                    type="text"
+                                    name="break_in_time[]"
+                                    value="{{ $breakInTime ? \Carbon\Carbon::parse($breakInTime)->format('H:i') : '' }}">
+
+                                <span class="attendance-detail-form__separator">〜</span>
+
+                                <input
+                                    class="attendance-detail-form__time-input"
+                                    type="text"
+                                    name="break_out_time[]"
+                                    value="{{ $breakOutTime ? \Carbon\Carbon::parse($breakOutTime)->format('H:i') : '' }}">
+                            @endif
                         </td>
                     </tr>
                 @endfor
@@ -103,14 +153,14 @@
                     <th class="attendance-detail-table__heading">備考</th>
                     <td class="attendance-detail-table__data attendance-detail-table__data--note">
                         @if ($pendingAttendanceEdit)
-                            {{-- 修正: 承認待ち中は入力欄ではなく、申請した備考を通常表示 --}}
+                            {{--承認待ち中は入力欄ではなく、申請した備考を通常表示 --}}
                             <p class="attendance-detail-form__note-text">{{ $pendingAttendanceEdit->note }}</p>
                         @else
-                            {{-- 修正: 通常時は備考入力欄を表示 --}}
+                            {{--通常時は備考入力欄を表示 --}}
                             <textarea
                                 class="attendance-detail-form__textarea"
                                 name="note"
-                                id="note">{{ old('note', $attendance->note) }}</textarea>
+                                id="note">{{ old('note', $approvedAttendanceEdit ? $approvedAttendanceEdit->note : $attendance->note) }}</textarea>
 
                             @error('note')
                                 <p class="attendance-detail-form__error">{{ $message }}</p>
@@ -122,7 +172,7 @@
 
             <div class="attendance-detail-form__button-area">
                 @if ($pendingAttendanceEdit)
-                    {{-- 修正: 承認待ち中は修正ボタンを表示しない --}}
+                    {{--承認待ち中は修正ボタンを表示しない --}}
                     <p class="attendance-detail-form__pending-message">
                         *承認待ちのため修正はできません。
                     </p>

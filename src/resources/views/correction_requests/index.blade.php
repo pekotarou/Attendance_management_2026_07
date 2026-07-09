@@ -26,7 +26,7 @@
         </div>
 
         <table class="correction-request-table">
-            <tr class="correction-request-table__row">
+            <tr class="correction-request-table__row correction-request-table__row--head">
                 <th class="correction-request-table__heading">状態</th>
                 <th class="correction-request-table__heading">名前</th>
                 <th class="correction-request-table__heading">対象日時</th>

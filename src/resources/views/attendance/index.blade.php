@@ -28,7 +28,7 @@
             </form>
         @elseif ($status === '出勤中')
             <div class="attendance__button-area">
-                {{-- 修正: 退勤処理 --}}
+                {{--退勤処理 --}}
                 <form class="attendance__form" action="/attendance/clock-out" method="post">
                     @csrf
                     <button class="attendance__button" type="submit">
@@ -36,7 +36,7 @@
                     </button>
                 </form>
 
-                {{-- 修正: 休憩入処理 --}}
+                {{--休憩入処理 --}}
                 <form class="attendance__form" action="/attendance/break-in" method="post">
                     @csrf
                     <button class="attendance__button attendance__button--secondary" type="submit">
@@ -45,7 +45,7 @@
                 </form>
             </div>
         @elseif ($status === '休憩中')
-            {{-- 修正: 休憩戻処理 --}}
+            {{--休憩戻処理 --}}
             <form class="attendance__form" action="/attendance/break-out" method="post">
                 @csrf
                 <button class="attendance__button attendance__button--secondary" type="submit">

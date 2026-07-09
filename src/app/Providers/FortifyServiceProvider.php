@@ -21,7 +21,7 @@ class FortifyServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     */
+    */
     public function register(): void
     {
         //
@@ -29,28 +29,28 @@ class FortifyServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
-     */
+    */
     public function boot(): void
     {
-        // 修正: 会員登録時に使うユーザー作成クラスを指定
+        //会員登録時に使うユーザー作成クラスを指定
         Fortify::createUsersUsing(CreateNewUser::class);
 
-        // 修正: 会員登録画面を指定
+        //会員登録画面を指定
         Fortify::registerView(function () {
             return view('auth.register');
         });
 
-        // 修正: ログイン画面を指定
+        //ログイン画面を指定
         Fortify::loginView(function () {
             return view('auth.login');
         });
 
-        // 修正: メール認証誘導画面を指定
+        //メール認証誘導画面を指定
         Fortify::verifyEmailView(function () {
             return view('auth.verify-email');
         });
 
-        // 修正: ログイン時のバリデーションと認証処理
+        //ログイン時のバリデーションと認証処理
         Fortify::authenticateUsing(function ($request) {
             $loginRequest = LoginRequest::createFrom($request);
             $loginRequest->setContainer(app());
@@ -58,7 +58,8 @@ class FortifyServiceProvider extends ServiceProvider
 
             $user = User::where('email', $request->email)->first();
 
-            if (! $user || ! Hash::check($request->password, $user->password)) {
+            // 修正: ユーザーが存在しない、パスワードが違う、管理者である場合は同じエラーにする
+            if (! $user || ! Hash::check($request->password, $user->password) || $user->admin) {
                 throw ValidationException::withMessages([
                     'email' => ['ログイン情報が登録されていません'],
                 ]);

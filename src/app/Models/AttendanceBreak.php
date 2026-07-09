@@ -9,7 +9,7 @@ class AttendanceBreak extends Model
 {
     use HasFactory;
 
-    // 修正: モデル名とテーブル名が一致しないため指定
+    //モデル名とテーブル名が一致しないため指定
     protected $table = 'breaks';
 
     protected $fillable = [

@@ -12,7 +12,7 @@
             メール認証を完了してください。
         </p>
 
-        {{-- 修正: MailHogのメール確認画面へ移動 --}}
+        {{--MailHogのメール確認画面へ移動 --}}
         <a
             class="verify-email__button"
             href="http://localhost:8025"
@@ -20,7 +20,7 @@
             認証はこちらから
         </a>
 
-        {{-- 修正: 認証メール再送 --}}
+        {{--認証メール再送 --}}
         <form class="verify-email__resend-form" action="/email/verification-notification" method="post">
             @csrf
 

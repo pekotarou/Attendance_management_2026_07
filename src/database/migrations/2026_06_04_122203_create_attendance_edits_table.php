@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * attendance_editsテーブルを作成
-     */
+    */
     public function up(): void
     {
         Schema::create('attendance_edits', function (Blueprint $table) {
@@ -38,7 +38,7 @@ return new class extends Migration
 
     /**
      * attendance_editsテーブルを削除
-     */
+    */
     public function down(): void
     {
         Schema::dropIfExists('attendance_edits');

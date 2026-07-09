@@ -9,7 +9,7 @@
     <div class="auth__inner">
         <h1 class="auth__heading">会員登録</h1>
 
-        {{-- 修正: Fortifyの会員登録URLに送信 --}}
+        {{--Fortifyの会員登録URLに送信 --}}
         <form class="auth-form" action="/register" method="post">
             @csrf
 

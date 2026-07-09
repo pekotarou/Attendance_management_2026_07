@@ -10,7 +10,7 @@ class CreateUsersTable extends Migration
      * Run the migrations.
      *
      * @return void
-     */
+    */
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
@@ -20,12 +20,12 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
 
-            // 修正: メール認証で使うため残す
+            //メール認証で使うため残す
             $table->timestamp('email_verified_at')->nullable();
 
             $table->rememberToken();
 
-            // 修正: 管理者判定用。一般ユーザー=false、管理者=true
+            //管理者判定用。一般ユーザー=false、管理者=true
             $table->boolean('admin')->default(false);
 
             $table->timestamps();
@@ -36,7 +36,7 @@ class CreateUsersTable extends Migration
      * Reverse the migrations.
      *
      * @return void
-     */
+    */
     public function down()
     {
         Schema::dropIfExists('users');

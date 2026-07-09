@@ -1,0 +1,91 @@
+.admin-attendance-list {
+    min-height: calc(100vh - 72px);
+    background: #f0eff2;
+}
+
+.admin-attendance-list__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-top: 80px;
+}
+
+.admin-attendance-list__heading {
+    margin: 0 0 40px;
+    padding-left: 18px;
+    border-left: 8px solid #000;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.admin-attendance-list__date {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 44px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.admin-attendance-list__date-button {
+    color: #737373;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.admin-attendance-list__date-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.admin-attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    letter-spacing: 0.10em;
+}
+
+.admin-attendance-table__row {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.admin-attendance-table__row--head {
+    border-bottom: 3px solid #e0e0e0;
+}
+
+.admin-attendance-table__heading {
+    padding: 14px 12px;
+    color: #737373;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.admin-attendance-table__data {
+    padding: 14px 12px;
+    color: #737373;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.admin-attendance-table__link {
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+
+/* 修正: 管理者勤怠一覧のカレンダーアイコン */
+.admin-attendance-list__calendar-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}

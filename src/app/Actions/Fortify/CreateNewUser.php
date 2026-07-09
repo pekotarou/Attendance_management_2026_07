@@ -11,20 +11,20 @@ class CreateNewUser implements CreatesNewUsers
 {
     /**
      * 会員登録処理
-     */
+    */
     public function create(array $input): User
     {
         Validator::make($input, [
-            // 修正: 名前は必須
+            //名前は必須
             'name' => ['required', 'string', 'max:255'],
 
-            // 修正: emailはBlade側でtype="text"にし、Laravel側でemail形式を検証
+            //emailはBlade側でtype="text"にし、Laravel側でemail形式を検証
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
 
-            // 修正: 確認用パスワードと一致させる
+            //確認用パスワードと一致させる
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ], [
-            // 修正: 日本語エラーメッセージ
+            //日本語エラーメッセージ
             'name.required' => '名前を入力してください',
             'email.required' => 'メールアドレスを入力してください',
             'email.email' => 'メールアドレスは「ユーザー名@ドメイン」形式で入力してください',
@@ -38,10 +38,10 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'email' => $input['email'],
 
-            // 修正: パスワードは必ずハッシュ化して保存
+            //パスワードは必ずハッシュ化して保存
             'password' => Hash::make($input['password']),
 
-            // 修正: 会員登録画面から作成されるユーザーは一般ユーザー
+            //会員登録画面から作成されるユーザーは一般ユーザー
             'admin' => false,
         ]);
     }

@@ -17,7 +17,7 @@
     color: #696969;
     font-size: 16px;
     font-weight: bold;
-    /* 修正: ステータス文字の間隔を少し広げる */
+    /*ステータス文字の間隔を少し広げる*/
     letter-spacing: 0.10em;
 }
 
@@ -46,7 +46,7 @@
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
-    /* 修正: ボタン文字の間隔を少し広げる */
+    /*ボタン文字の間隔を少し広げる*/
     letter-spacing: 0.12em;
 }
 
@@ -57,14 +57,14 @@
     letter-spacing: 0.12em;
 }
 
-/* 修正: ボタンを横並びにする */
+/*ボタンを横並びにする*/
 .attendance__button-area {
     display: flex;
     justify-content: center;
     gap: 56px;
 }
 
-/* 修正: 白い休憩入ボタン */
+/*白い休憩入ボタン*/
 .attendance__button--secondary {
     background: #fff;
     color: #000;

@@ -2,14 +2,13 @@ body {
     margin: 0;
 }
 
-/* 修正: paddingやborderを含めて幅計算しやすくする */
+/*paddingやborderを含めて幅計算しやすくする*/
 * {
     box-sizing: border-box;
 }
 
 .app {
     min-height: 100vh;
-    /*background: white;*/
     font-family: Arial, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
 }
 
@@ -18,13 +17,13 @@ body {
 }
 
 .header__inner {
-    /* 修正: ヘッダー内を画面幅いっぱいにする */
+    /*ヘッダー内を画面幅いっぱいにする*/
     width: 100%;
 
-    /* 修正: 中央寄せをやめる */
+    /*中央寄せをやめる*/
     margin: 0;
 
-    /* 修正: 左右の余白。完全に左端なら 0 にする */
+    /*左右の余白。完全に左端なら 0 にする*/
     padding: 18px 30px;
 
     display: flex;
@@ -50,17 +49,33 @@ body {
     width: auto;
 }
 
-/* 修正: ログアウトフォーム */
+/*ログアウトフォーム*/
 .header-logout {
     margin: 0;
 }
 
-/* 修正: ログアウトボタン */
+/*ログアウトボタン*/
 .header-logout__button {
     border: none;
     background: transparent;
     color: #fff;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
     cursor: pointer;
+}
+
+
+/*ヘッダーナビ*/
+.header-nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+/*ヘッダーリンク*/
+.header-nav__link {
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
 }

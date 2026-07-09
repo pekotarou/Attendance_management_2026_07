@@ -8,10 +8,10 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Seederを実行
-     */
+    */
     public function run(): void
     {
-        // 修正: 初期ユーザー作成
+        //初期ユーザー作成
         $this->call([
             UserSeeder::class,
         ]);

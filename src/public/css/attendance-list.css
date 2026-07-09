@@ -1,6 +1,7 @@
 .attendance-list {
     min-height: calc(100vh - 72px);
     background: #f0eff2;
+    letter-spacing: 0.10em;
 }
 
 .attendance-list__inner {

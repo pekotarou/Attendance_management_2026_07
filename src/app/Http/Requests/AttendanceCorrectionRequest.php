@@ -8,7 +8,7 @@ class AttendanceCorrectionRequest extends FormRequest
 {
     /**
      * 認可
-     */
+    */
     public function authorize()
     {
         return true;
@@ -16,7 +16,7 @@ class AttendanceCorrectionRequest extends FormRequest
 
     /**
      * バリデーションルール
-     */
+    */
     public function rules()
     {
         return [
@@ -33,7 +33,7 @@ class AttendanceCorrectionRequest extends FormRequest
 
     /**
      * エラーメッセージ
-     */
+    */
     public function messages()
     {
         return [

@@ -12,7 +12,7 @@
         </h1>
 
         <div class="attendance-list__month">
-            {{-- 修正: 前月リンク --}}
+            {{--前月リンク --}}
             <a
                 class="attendance-list__month-button"
                 href="/attendance/list?month={{ $previousMonth }}">
@@ -27,7 +27,7 @@
                 {{ $currentMonth->format('Y/m') }}
             </p>
 
-            {{-- 修正: 翌月リンク --}}
+            {{--翌月リンク --}}
             <a
                 class="attendance-list__month-button"
                 href="/attendance/list?month={{ $nextMonth }}">
@@ -46,20 +46,47 @@
             </tr>
             @foreach ($dates as $date)
                 @php
-                    // 修正: その日付に対応する勤怠データを取得
+                    // その日付に対応する勤怠データを取得
                     $attendance = $attendances->get($date->toDateString());
 
+                    // 修正: 承認済みの修正申請があれば最新のものを取得
+                    $approvedAttendanceEdit = $attendance
+                        ? $attendance->attendanceEdits
+                            ->where('status', '承認済み')
+                            ->sortByDesc('created_at')
+                            ->first()
+                        : null;
+
+                    // 修正: 承認済み申請があれば、申請後の出勤・退勤を優先表示
+                    $clockInTime = $approvedAttendanceEdit
+                        ? $approvedAttendanceEdit->requested_clock_in_time
+                        : ($attendance ? $attendance->clock_in_time : null);
+
+                    $clockOutTime = $approvedAttendanceEdit
+                        ? $approvedAttendanceEdit->requested_clock_out_time
+                        : ($attendance ? $attendance->clock_out_time : null);
+
+                    // 修正: 承認済み申請があれば、break_editsから休憩時間を計算
                     $breakMinutes = 0;
+
+                    if ($approvedAttendanceEdit) {
+                        foreach ($approvedAttendanceEdit->breakEdits as $breakEdit) {
+                            if ($breakEdit->requested_break_in_time && $breakEdit->requested_break_out_time) {
+                                $breakMinutes += \Carbon\Carbon::parse($breakEdit->requested_break_in_time)
+                                    ->diffInMinutes(\Carbon\Carbon::parse($breakEdit->requested_break_out_time));
+                            }
+                        }
+                    } elseif ($attendance) {
+                        $breakMinutes = $attendance->breaks->sum('break_time');
+                    }
+
+                    // 修正: 表示用の出勤・退勤・休憩から合計時間を計算
                     $workMinutes = null;
 
-                    if ($attendance) {
-                        $breakMinutes = $attendance->breaks->sum('break_time');
-
-                        if ($attendance->clock_in_time && $attendance->clock_out_time) {
-                            $workMinutes = \Carbon\Carbon::parse($attendance->clock_in_time)
-                                ->diffInMinutes(\Carbon\Carbon::parse($attendance->clock_out_time))
-                                - $breakMinutes;
-                        }
+                    if ($clockInTime && $clockOutTime) {
+                        $workMinutes = \Carbon\Carbon::parse($clockInTime)
+                            ->diffInMinutes(\Carbon\Carbon::parse($clockOutTime))
+                            - $breakMinutes;
                     }
                 @endphp
 
@@ -69,12 +96,11 @@
                     </td>
 
                     <td class="attendance-table__data">
-                        {{ $attendance && $attendance->clock_in_time ? \Carbon\Carbon::parse($attendance->clock_in_time)->format('H:i') : '' }}
+                        {{ $clockInTime ? \Carbon\Carbon::parse($clockInTime)->format('H:i') : '' }}
                     </td>
 
                     <td class="attendance-table__data">
-                        {{ $attendance && $attendance->clock_out_time ? \Carbon\Carbon::parse($attendance->clock_out_time)->format('H:i') : '' }}
-                    </td>
+                        {{ $clockOutTime ? \Carbon\Carbon::parse($clockOutTime)->format('H:i') : '' }}                    </td>
 
                     <td class="attendance-table__data">
                         {{ $breakMinutes > 0 ? floor($breakMinutes / 60) . ':' . sprintf('%02d', $breakMinutes % 60) : '' }}

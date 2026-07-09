@@ -23,19 +23,19 @@ class AttendanceEdit extends Model
         'requested_clock_out_time' => 'datetime',
     ];
 
-    // 修正: 修正申請は元の勤怠に属する
+    //修正申請は元の勤怠に属する
     public function attendance()
     {
         return $this->belongsTo(Attendance::class);
     }
 
-    // 修正: 修正申請は申請したユーザーに属する
+    //修正申請は申請したユーザーに属する
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // 修正: 修正申請は複数の休憩修正を持つ
+    //修正申請は複数の休憩修正を持つ
     public function breakEdits()
     {
         return $this->hasMany(BreakEdit::class);

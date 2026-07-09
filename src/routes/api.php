@@ -1,19 +1,21 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\AttendanceRecordController;
+use App\Http\Controllers\Api\V1\ApiTokenController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+Route::prefix('v1')->group(function () {
+    // 修正: APIトークン発行
+    Route::post('/tokens', [ApiTokenController::class, 'store']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    // 修正: 勤怠データ取得は公開APIとして認証なし
+    Route::get('/attendance-records', [AttendanceRecordController::class, 'index']);
+    Route::get('/attendance-records/{attendanceRecord}', [AttendanceRecordController::class, 'show']);
+
+    // 修正: 勤怠データ操作はAPIトークン必須
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/attendance-records', [AttendanceRecordController::class, 'store']);
+        Route::put('/attendance-records/{attendanceRecord}', [AttendanceRecordController::class, 'update']);
+        Route::delete('/attendance-records/{attendanceRecord}', [AttendanceRecordController::class, 'destroy']);
+    });
 });

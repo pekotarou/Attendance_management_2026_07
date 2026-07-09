@@ -8,7 +8,7 @@ class LoginRequest extends FormRequest
 {
     /**
      * 認可
-     */
+    */
     public function authorize(): bool
     {
         return true;
@@ -16,21 +16,21 @@ class LoginRequest extends FormRequest
 
     /**
      * バリデーションルール
-     */
+    */
     public function rules(): array
     {
         return [
-            // 修正: Blade側はtype="text"、Laravel側でメール形式を確認
+            //Blade側はtype="text"、Laravel側でメール形式を確認
             'email' => ['required', 'email'],
 
-            // 修正: パスワード必須
+            //パスワード必須
             'password' => ['required'],
         ];
     }
 
     /**
      * エラーメッセージ
-     */
+    */
     public function messages(): array
     {
         return [

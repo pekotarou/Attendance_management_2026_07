@@ -1,0 +1,101 @@
+.admin-correction-request-show {
+    min-height: calc(100vh - 72px);
+    background: #f0eff2;
+    letter-spacing: 0.10em;
+}
+
+.admin-correction-request-show__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.admin-correction-request-show__heading {
+    margin: 0 0 40px;
+    padding-left: 18px;
+    border-left: 8px solid #000;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.admin-correction-request-show-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.admin-correction-request-show-table__row {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.admin-correction-request-show-table__heading {
+    width: 30%;
+    padding: 28px 48px;
+    color: #737373;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.admin-correction-request-show-table__data {
+    padding: 22px 48px;
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.admin-correction-request-show-table__date-month {
+    margin-left: 80px;
+}
+
+.admin-correction-request-show-form__time-text {
+    display: inline-block;
+    width: 100px;
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.admin-correction-request-show-form__separator {
+    margin: 0 40px;
+}
+
+.admin-correction-request-show-table__data--note {
+    text-align: left;
+}
+
+.admin-correction-request-show-form__note-text {
+    margin: 0;
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
+    white-space: pre-wrap;
+}
+
+.admin-correction-request-show-form__button-area {
+    margin-top: 32px;
+    text-align: right;
+}
+
+.admin-correction-request-show-form__button {
+    width: 130px;
+    height: 48px;
+    border: none;
+    border-radius: 4px;
+    background: #000;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 0.12em;
+}
+
+/* 修正: 承認済みボタン */
+.admin-correction-request-show-form__button--approved {
+    background: #696969;
+    cursor: default;
+}

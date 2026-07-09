@@ -23,6 +23,7 @@
     border-radius: 8px;
     overflow: hidden;
     background: #fff;
+    letter-spacing: 0.10em;
 }
 
 .attendance-detail-table__row {
@@ -106,27 +107,34 @@
     color: #F77879;
     font-size: 16px;
     font-weight: bold;
-    /* 修正: ステータス文字の間隔を少し広げる */
+    /*承認待ちメッセージ文字の間隔を少し広げる*/
     letter-spacing: 0.10em;
 }
 
-/* 修正: 承認待ち中の備考表示 */
+
+
+/*承認待ち中の備考表示*/
 .attendance-detail-form__note-text {
     margin: 0;
     color: #000;
     font-size: 16px;
     font-weight: bold;
     white-space: pre-wrap;
-    margin: 0;
+    text-align: left;
+}
+
+/*備考欄だけ左揃えにする*/
+.attendance-detail-table__data--note {
+    text-align: left;
+}
+
+/* 修正: 承認待ち中の時刻表示 */
+.attendance-detail-form__time-text {
+    display: inline-block;
+    width: 100px;
     color: #000;
     font-size: 16px;
     font-weight: bold;
-    text-align: left;
-    white-space: pre-wrap;
-}
-
-/* 修正: 備考欄だけ左揃えにする */
-.attendance-detail-table__data--note {
     text-align: left;
 }
 

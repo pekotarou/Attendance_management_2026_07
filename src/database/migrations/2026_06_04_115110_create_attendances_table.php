@@ -8,7 +8,7 @@ class CreateAttendancesTable extends Migration
 {
     /**
      * attendancesテーブルを作成
-     */
+    */
     public function up()
     {
         Schema::create('attendances', function (Blueprint $table) {
@@ -38,7 +38,7 @@ class CreateAttendancesTable extends Migration
 
     /**
      * attendancesテーブルを削除
-     */
+    */
     public function down()
     {
         Schema::dropIfExists('attendances');
