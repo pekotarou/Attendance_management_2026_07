@@ -365,9 +365,8 @@ Tests: 46 passed
 ## ER図・設計資料
 
 ER図、テーブル仕様書、基本設計書、API仕様書は要件シートに記載しています。
-※![ER図](er_attendance_management.png)
-
 実装内容と設計資料の差異が出ないよう、実DBのテーブル構成・ルート定義・API仕様をもとに作成しています。
+![ER図](er_attendance_management.png)
 
 ---
 
