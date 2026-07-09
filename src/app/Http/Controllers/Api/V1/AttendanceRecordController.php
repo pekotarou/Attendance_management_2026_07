@@ -121,6 +121,8 @@ class AttendanceRecordController extends Controller
      */
     public function update(UpdateAttendanceRecordRequest $request, Attendance $attendanceRecord)
     {
+         // 修正: 本人または管理者のみ更新可能
+        $this->authorize('update', $attendanceRecord);
         $validated = $request->validated();
 
         // 修正: 勤怠データを更新
@@ -149,6 +151,8 @@ class AttendanceRecordController extends Controller
      */
     public function destroy(Attendance $attendanceRecord)
     {
+        // 修正: 本人または管理者のみ削除可能
+        $this->authorize('delete', $attendanceRecord);
         // 修正: 勤怠データを削除
         $attendanceRecord->delete();
 

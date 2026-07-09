@@ -2,20 +2,19 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
     /**
-     * A basic test example.
-     *
-     * @return void
-    */
-    public function test_example()
+     * トップページがログイン画面へリダイレクトされることを確認
+     */
+    public function test_top_page_redirects_to_login()
     {
+        // 修正: / は /login にリダイレクトする設計
         $response = $this->get('/');
 
-        $response->assertStatus(200);
+        // 修正: 200ではなく、/login へのリダイレクトを確認
+        $response->assertRedirect('/login');
     }
 }

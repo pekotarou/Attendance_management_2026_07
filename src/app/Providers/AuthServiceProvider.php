@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Attendance;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
+use App\Policies\AttendanceRecordPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
     */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        // 修正: AttendanceモデルにAPI用Policyを紐づけ
+        Attendance::class => AttendanceRecordPolicy::class,
     ];
 
     /**
