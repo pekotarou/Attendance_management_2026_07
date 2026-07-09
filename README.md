@@ -54,10 +54,36 @@ docker compose exec php bash
 composer install
 ```
 
-### 5. .env を作成
+### 5. .env を作成・編集
 
 ```bash
 cp .env.example .env
+```
+
+`.env` に以下の環境変数を設定してください。
+
+```env
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://localhost
+
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=laravel_db
+DB_USERNAME=laravel_user
+DB_PASSWORD=laravel_pass
+
+MAIL_MAILER=smtp
+MAIL_HOST=mailhog
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=test@example.com
+MAIL_FROM_NAME="${APP_NAME}"
 ```
 
 ### 6. アプリケーションキーを作成
@@ -84,6 +110,30 @@ php artisan migrate:fresh --seed
 | 管理者ログイン | http://localhost/admin/login |
 | phpMyAdmin | http://localhost:8080 |
 | MailHog | http://localhost:8025 |
+
+---
+
+## 使用方法
+
+### 一般ユーザー向け
+
+1. 会員登録画面からユーザー登録を行います。
+2. 登録後、メール認証を行います。
+3. ログイン後、勤怠登録画面で出勤・休憩開始・休憩終了・退勤を打刻します。
+4. 勤怠一覧画面で月ごとの勤怠を確認できます。
+5. 勤怠詳細画面から、出勤時間・退勤時間・休憩時間の修正申請ができます。
+6. 申請一覧画面で、承認待ち・承認済みの申請状況を確認できます。
+7. マイ勤怠レポート画面で、自分の勤務時間の集計を確認できます。
+
+### 管理者向け
+
+1. 管理者ログイン画面からログインします。
+2. 勤怠一覧画面で、日付ごとの全ユーザーの勤怠を確認できます。
+3. 勤怠詳細画面で、各ユーザーの勤怠内容を確認・修正できます。
+4. スタッフ一覧画面で、一般ユーザーの一覧を確認できます。
+5. スタッフ別勤怠一覧画面で、ユーザーごとの月別勤怠を確認できます。
+6. 申請一覧画面で、全ユーザーの修正申請を確認できます。
+7. 修正申請承認画面で、申請内容を確認し承認できます。
 
 ---
 
@@ -157,8 +207,8 @@ POST /api/v1/tokens
 
 ```json
 {
-  "email": "t@test.jp",
-  "password": "testtest"
+  "email": "user@example.com",
+  "password": "password"
 }
 ```
 
@@ -213,13 +263,14 @@ POST /api/v1/attendance-records
 
 ```json
 {
-  "user_id": 3,
+  "user_id": 1,
   "date": "2026-07-11",
   "clock_in": "09:00:00",
   "clock_out": "18:00:00",
   "comment": "API登録テスト"
 }
 ```
+※ user_id は実際に登録されている一般ユーザーのIDを指定してください。
 
 ---
 
@@ -374,6 +425,8 @@ ER図、テーブル仕様書、基本設計書、API仕様書は要件シート
 
 開発中に確認したテストはすべて通過しています。
 
+ログイン試行回数は、開発中のエラー文確認や動作確認をしやすくするため、1分間に30回までに設定しています。
+
 ```bash
 docker compose exec php php artisan test
 ```
@@ -381,3 +434,5 @@ docker compose exec php php artisan test
 ```text
 Tests: 46 passed
 ```
+
+
